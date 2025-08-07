@@ -1,5 +1,7 @@
 # Local stuff
 .DS_Store
+.keys/
+.idea/
 .vscode/
 test/
 test.py
