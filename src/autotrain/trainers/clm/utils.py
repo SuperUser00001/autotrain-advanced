@@ -4,6 +4,7 @@ import os
 from enum import Enum
 from itertools import chain
 
+import json5
 import requests
 import torch
 from accelerate.state import PartialState
@@ -315,6 +316,16 @@ def pause_endpoint(params):
     return r.json()
 
 
+def safe_ast_literal_eval(node_or_string):
+    if not isinstance(node_or_string, (list, tuple, dict)):
+        try:
+            msg_obj = json5.loads(node_or_string)
+        except Exception:
+            msg_obj = ast.literal_eval(node_or_string)
+        return msg_obj
+    else:
+        return ast.literal_eval(node_or_string)
+
 def apply_chat_template(
     example,
     tokenizer,
@@ -341,7 +352,7 @@ def apply_chat_template(
     if config.trainer in ("default", "sft"):
         messages = example[config.text_column]
         if isinstance(messages, str):
-            messages = ast.literal_eval(messages)
+            messages = safe_ast_literal_eval(messages)
         example[config.text_column] = tokenizer.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=False
         )
@@ -351,9 +362,9 @@ def apply_chat_template(
             chosen_messages = example["chosen"]
             rejected_messages = example["rejected"]
             if isinstance(chosen_messages, str):
-                chosen_messages = ast.literal_eval(chosen_messages)
+                chosen_messages = safe_ast_literal_eval(chosen_messages)
             if isinstance(rejected_messages, str):
-                rejected_messages = ast.literal_eval(rejected_messages)
+                rejected_messages = safe_ast_literal_eval(rejected_messages)
 
             if config.chat_template == "zephyr" and chosen_messages[0]["role"] != "system":
                 chosen_messages.insert(0, {"role": "system", "content": ""})
@@ -371,9 +382,9 @@ def apply_chat_template(
             # For DPO, the inputs are triples of (prompt, chosen, rejected), where `chosen` and `rejected` are the final turn of a dialogue
             # We therefore need to extract the N-1 turns to form the prompt
             if isinstance(example["chosen"], str):
-                example["chosen"] = ast.literal_eval(example["chosen"])
+                example["chosen"] = safe_ast_literal_eval(example["chosen"])
             if isinstance(example["rejected"], str):
-                example["rejected"] = ast.literal_eval(example["rejected"])
+                example["rejected"] = safe_ast_literal_eval(example["rejected"])
             prompt_messages = example["chosen"][:-1]
             if config.chat_template == "zephyr" and example["chosen"][0]["role"] != "system":
                 prompt_messages.insert(0, {"role": "system", "content": ""})

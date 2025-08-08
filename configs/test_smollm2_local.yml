@@ -1,13 +1,13 @@
 task: llm-sft
-base_model: /path/to/your/local/smollm2-model  # 本地模型路径
+base_model: ./.keys/models--HuggingFaceTB--SmolLM2-1.7B-Instruct  # local path
 project_name: autotrain-smollm2-finetune-local
 log: tensorboard
 backend: local
 
 data:
-  path: /path/to/your/local/dataset  # 本地数据集路径
+  path: ./.keys/datasets--HuggingFaceH4--no_robots  # local path
   train_split: train
-  valid_split: null
+  valid_split: test
   chat_template: tokenizer
   column_mapping:
     text_column: messages
@@ -31,4 +31,4 @@ params:
 hub:
   username: ${HF_USERNAME}
   token: ${HF_TOKEN}
-  push_to_hub: false # 不推送到huggingface 
+  push_to_hub: false # no pushing to huggingface

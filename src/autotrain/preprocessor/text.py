@@ -7,7 +7,7 @@ from datasets import ClassLabel, Dataset, DatasetDict, Sequence
 from sklearn.model_selection import train_test_split
 
 from autotrain import logger
-
+from autotrain.trainers.clm.utils import safe_ast_literal_eval
 
 RESERVED_COLUMNS = ["autotrain_text", "autotrain_label", "autotrain_question", "autotrain_answer"]
 LLM_RESERVED_COLUMNS = [
@@ -257,14 +257,14 @@ class TextTokenClassificationPreprocessor(TextBinaryClassificationPreprocessor):
         train_df, valid_df = self.split()
         train_df, valid_df = self.prepare_columns(train_df, valid_df)
         try:
-            train_df.loc[:, "autotrain_text"] = train_df["autotrain_text"].apply(lambda x: ast.literal_eval(x))
-            valid_df.loc[:, "autotrain_text"] = valid_df["autotrain_text"].apply(lambda x: ast.literal_eval(x))
+            train_df.loc[:, "autotrain_text"] = train_df["autotrain_text"].apply(lambda x: safe_ast_literal_eval(x))
+            valid_df.loc[:, "autotrain_text"] = valid_df["autotrain_text"].apply(lambda x: safe_ast_literal_eval(x))
         except ValueError:
             logger.warning("Unable to do ast.literal_eval on train_df['autotrain_text']")
             logger.warning("assuming autotrain_text is already a list")
         try:
-            train_df.loc[:, "autotrain_label"] = train_df["autotrain_label"].apply(lambda x: ast.literal_eval(x))
-            valid_df.loc[:, "autotrain_label"] = valid_df["autotrain_label"].apply(lambda x: ast.literal_eval(x))
+            train_df.loc[:, "autotrain_label"] = train_df["autotrain_label"].apply(lambda x: safe_ast_literal_eval(x))
+            valid_df.loc[:, "autotrain_label"] = valid_df["autotrain_label"].apply(lambda x: safe_ast_literal_eval(x))
         except ValueError:
             logger.warning("Unable to do ast.literal_eval on train_df['autotrain_label']")
             logger.warning("assuming autotrain_label is already a list")
@@ -746,7 +746,7 @@ class TextExtractiveQuestionAnsweringPreprocessor:
         # convert answer_column to dict
         try:
             self.train_data.loc[:, self.answer_column] = self.train_data[self.answer_column].apply(
-                lambda x: ast.literal_eval(x)
+                lambda x: safe_ast_literal_eval(x)
             )
         except ValueError:
             logger.warning("Unable to do ast.literal_eval on train_data[answer_column]")
@@ -755,7 +755,7 @@ class TextExtractiveQuestionAnsweringPreprocessor:
         if self.valid_data is not None:
             try:
                 self.valid_data.loc[:, self.answer_column] = self.valid_data[self.answer_column].apply(
-                    lambda x: ast.literal_eval(x)
+                    lambda x: safe_ast_literal_eval(x)
                 )
             except ValueError:
                 logger.warning("Unable to do ast.literal_eval on valid_data[answer_column]")
