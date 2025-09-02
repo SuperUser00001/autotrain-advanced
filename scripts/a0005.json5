@@ -1,0 +1,27 @@
+{
+    // 数据集信息
+    "x": "datasets/a0005/data_x.npy", // [BS,25,3,2]
+    "mask_x": "datasets/a0005/data_mask_x.npy", // [BS,25]
+    "y": "datasets/a0005/data_y.npy",  // [BS,4]
+    "mask_y": "datasets/a0005/data_mask_y.npy",  // [BS,4]
+    // 当前是否有故障（0无故障，1母线上故障，2母线间线路故障）3  故障线索引 16    故障相  3
+    "cls_idx":[0,                       1,                3],  // 分类
+    "reg_idx":[2],
+    // 对应 y[0], y[1], y[3] 的类别数
+    "num_classes_list": [3, 16, 3],
+
+    "model_folder_path": "./models/demo",
+    // 训练配置
+    "batch_size": 16,
+    "learning_rate": 0.002,
+    "epochs": 1,
+    "lambda_reg": 1.0,
+    "saving_for_every_cnt_epoches": 1,
+    "loss_update_threshold": 1e-6, // 训练提前停机阈值,
+    "source_model_name": "003", //
+    "target_model_name": "004",
+    "resume_optimizer": true, // 设置当前训练是否要恢复之前训练过程的优化器配置,
+
+    // 测试配置
+    "testing_model_name": "003", // 执行测试的模型版本
+}

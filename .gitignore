@@ -13,6 +13,7 @@ autotrain.db
 autotrain.log
 *.db
 data/
+datasets/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -22,6 +23,9 @@ autotrain-*
 op-*
 # C extensions
 *.so
+# models
+*.safetensors
+*.pth
 test.yml
 test.ipynb
 output.png

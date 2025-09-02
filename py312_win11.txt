@@ -1,0 +1,24 @@
+colorama==0.4.6
+filelock==3.19.1
+fsspec==2025.7.0
+Jinja2==3.1.6
+joblib==1.5.1
+json5==0.12.1
+MarkupSafe==3.0.2
+mpmath==1.3.0
+networkx==3.5
+numpy==2.3.2
+packaging==25.0
+pillow==11.3.0
+pyreadline3==3.5.4
+safetensors==0.6.2
+scikit-learn==1.7.1
+scipy==1.16.1
+setuptools==80.9.0
+sympy==1.14.0
+threadpoolctl==3.6.0
+torch @ file:///E:/modsPy/torch-2.8.0%2Bcu129-cp312-cp312-win_amd64.whl#sha256=2bc729898e422b9f3da54349eed98f2f0b5dd415434508ee2ab2a13fb021815d
+torchaudio @ file:///E:/modsPy/torchaudio-2.8.0%2Bcu129-cp312-cp312-win_amd64.whl#sha256=bfe0d4c6e770ef3b1f7a287a4c8d33ac276a1d983306573ee28e42de02a32fe3
+torchvision @ file:///E:/modsPy/torchvision-0.23.0%2Bcu129-cp312-cp312-win_amd64.whl#sha256=57cf57ada9a5407755e170a4ab3842337b83862c93f9483decaf0b6b4d69fa09
+tqdm==4.67.1
+typing_extensions==4.14.1
